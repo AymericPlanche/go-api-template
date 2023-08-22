@@ -1,0 +1,3 @@
+coverage/*
+myapp
+docker-compose.override.yml

@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      dockerfile: ./build/dev/Dockerfile
+      context: .
+    ports:
+      - 8080:80
+    volumes:
+      - ./:/usr/local/myapp
+    environment:
+      - PORT=80
+      - ENVIRONMENT=local
+
+  # use the prod image. Not convenient for development, but allows testing this image
+  app-prod:
+    image: myapp-app-prod
+    build:
+      context: .
+    ports:
+      - 8081:80
+    environment:
+      - PORT=80
+      - ENVIRONMENT=local
