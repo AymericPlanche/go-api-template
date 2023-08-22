@@ -11,4 +11,4 @@ COPY . .
 
 RUN go install github.com/githubnemo/CompileDaemon@latest
 
-CMD CompileDaemon -command="./myapp" -graceful-kill
+CMD CompileDaemon -command="./myapp" -graceful-kill -build="go build -buildvcs=false"
