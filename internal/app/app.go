@@ -16,7 +16,7 @@ import (
 )
 
 func Start(cfg Config) {
-	services := initServices(cfg)
+	services := InitServices(cfg)
 
 	log := services.Logger
 

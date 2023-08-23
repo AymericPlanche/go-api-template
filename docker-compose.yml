@@ -9,9 +9,16 @@ services:
       - 8080:80
     volumes:
       - ./:/usr/local/myapp
-    environment:
-      - PORT=80
-      - ENVIRONMENT=local
+    environment: &app_environment
+      PORT: 80
+      ENVIRONMENT: local
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_NAME: things
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+    depends_on:
+      - db
 
   # use the prod image. Not convenient for development, but allows testing this image
   app-prod:
@@ -21,5 +28,16 @@ services:
     ports:
       - 8081:80
     environment:
-      - PORT=80
-      - ENVIRONMENT=local
+      <<: *app_environment
+    depends_on:
+      - db
+
+  db:
+    image: postgres:alpine
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - ./build/database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    environment:
+      POSTGRES_PASSWORD: postgres

@@ -14,7 +14,22 @@ The local image supports hot reloading, so the go application is rebuilt every t
 
 ## Tests
 
+### Unit tests
 
+Unit tests are run with `make test-unit`
+Unit tests should be stateless and can be run in parallel.
+
+### Integration tests
+
+Integration tests are run with `make test-unit`
+Integration tests rely on an `integration` database that is reset between tests with `integration_tests.ResetDatabase()`
+Tests are run sequentially to avoid race condition to the database
+
+### Coverage
+
+The coverage is generated for the entire test suite (unit + integration)
+The `make coverage-text` command generates a text report.
+The `make coverage-html` command generates an html report and opens it with Firefox. If Firefox is not available on your machine you can open the`coverage/index.html` file in your browser.
 
 
 

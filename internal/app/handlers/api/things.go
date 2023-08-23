@@ -19,7 +19,7 @@ type ThingsHandler struct {
 // handler for GET /things
 func (h ThingsHandler) Index() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		things, err := h.ThingsRepo.LoadAll(r.Context())
+		things, err := h.ThingsRepo.LoadAll()
 		if err != nil {
 			h.Logger.Error().Err(err).Msg("error while loading things")
 			response.Error(w, err.Error(), http.StatusInternalServerError)
@@ -37,7 +37,7 @@ func (h ThingsHandler) Details() http.HandlerFunc {
 
 		h.Logger.Info().Str("id", id).Msg("retrieving details")
 
-		thing, err := h.ThingsRepo.Load(r.Context(), things.ID(id))
+		thing, err := h.ThingsRepo.Load(things.ID(id))
 		if err != nil {
 			if err == things.ErrNotFound {
 				response.Error(w, "not found", http.StatusNotFound)
@@ -66,7 +66,7 @@ func (h ThingsHandler) Create() http.HandlerFunc {
 			return
 		}
 
-		if err := h.ThingsRepo.Create(r.Context(), thing); err != nil {
+		if err := h.ThingsRepo.Create(thing); err != nil {
 			if err == things.ErrAlreadyExists {
 				response.Error(w, err.Error(), http.StatusConflict)
 				return
