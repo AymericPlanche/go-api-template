@@ -5,6 +5,6 @@
   "files.trimFinalNewlines": true,
   "files.trimTrailingWhitespace": true,
   "yaml.schemas": {
-    "https://taskfile.dev/schema.json": "file:///home/go-user/pdp/timmy-proxy/taskfile.yaml"
+    "https://taskfile.dev/schema.json": "file:///home/go-user/taskfile.yaml"
   }
 }
