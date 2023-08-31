@@ -22,5 +22,5 @@
       "go.lintFlags": ["--fast"]
     }
   },
-  "postStartCommand": "task app-dev"
+  "postStartCommand": "task up"
 }

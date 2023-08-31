@@ -9,11 +9,10 @@ tasks:
     cmds:
       - task --list
 
-  app-dev:
-    aliases: ["i"]
+  up:
     cmds:
       - build/database/reset.sh things
-    desc: Install the dependencies
+    desc: Launch mandatory commands for the app to be up&ready
 
   install:
     aliases: ["i"]
@@ -33,13 +32,13 @@ tasks:
     cmds:
       - golangci-lint run
 
-  integration-test:
+  test-integration:
     desc: Launch integration tests
     cmds:
       - build/database/reset.sh integration
       - go test -p 1 -run Integration ./...
 
-  test:
+  test-unit:
     aliases: ["t"]
     desc: Run Go tests
     cmds:
@@ -57,11 +56,17 @@ tasks:
       - task: lint
       - echo "✔ No linting error on Go code"
       - echo ""
-      - echo "|--------------|"
-      - echo "| Run Go tests |"
-      - echo "|--------------|"
+      - echo "|-------------------|"
+      - echo "| Run Go unit tests |"
+      - echo "|-------------------|"
       - echo ""
-      - task: test
+      - task: test-unit
+      - echo ""
+      - echo "|--------------------------|"
+      - echo "| Run Go integration tests |"
+      - echo "|--------------------------|"
+      - echo ""
+      - task: test-integration
       - echo ""
       - echo "|----------------------|"
       - echo "| All tests successful |"
