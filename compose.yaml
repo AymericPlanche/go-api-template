@@ -1,14 +1,36 @@
 version: '3.8'
 
 services:
+  go:
+    build:
+      dockerfile: ./build/dev/Dockerfile
+      context: .
+      args:
+        - DEV_UID=${DEV_UID:-1000}
+        - DEV_GID=${DEV_GID:-1000}
+    command: /bin/sh -c "while sleep 3600; do :; done"
+    user: ${DEV_UID:-1000}:${DEV_GID:-1000}
+    volumes:
+      - .:/home/go-user/myapp
+    working_dir: /home/go-user/myapp
+
   app:
     build:
       dockerfile: ./build/dev/Dockerfile
       context: .
+      args:
+        - DEV_UID=${DEV_UID:-1000}
+        - DEV_GID=${DEV_GID:-1000}
     ports:
       - 8080:80
     volumes:
-      - ./:/usr/local/myapp
+      - ./:/home/go-user/myapp
+    user: ${DEV_UID:-1000}:${DEV_GID:-1000}
+    command:
+      - "air"
+      - "-c"
+      - ".air.toml"
+    working_dir: /home/go-user/myapp
     environment: &app_environment
       PORT: 80
       ENVIRONMENT: local
@@ -17,18 +39,6 @@ services:
       DATABASE_NAME: things
       DATABASE_HOST: db
       DATABASE_PORT: 5432
-    depends_on:
-      - db
-
-  # use the prod image. Not convenient for development, but allows testing this image
-  app-prod:
-    image: myapp-app-prod
-    build:
-      context: .
-    ports:
-      - 8081:80
-    environment:
-      <<: *app_environment
     depends_on:
       - db
 

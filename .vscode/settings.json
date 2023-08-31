@@ -1,0 +1,10 @@
+{
+  "editor.defaultFormatter": "golang.go",
+  "editor.rulers": [120],
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true,
+  "yaml.schemas": {
+    "https://taskfile.dev/schema.json": "file:///home/go-user/pdp/timmy-proxy/taskfile.yaml"
+  }
+}

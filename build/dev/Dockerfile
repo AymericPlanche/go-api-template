@@ -1,19 +1,25 @@
-# This file is for LOCAL DEV only
-# DO NOT USE IN PRODUCTION
-FROM golang:1
-WORKDIR /usr/local/myapp
+FROM golang:1.20
 
-# Postgres client
+ARG DEV_UID
+ARG DEV_GID
+
+RUN addgroup --gid $DEV_GID go-user && \
+    adduser --disabled-password --uid $DEV_UID --ingroup go-user go-user
+
 RUN apt-get update && \
     apt-get install -y postgresql-client
 
-# install gcloud - might be useful to troubleshoot
-RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg  add - && apt-get update -y && apt-get install google-cloud-cli -y
+USER go-user:go-user
 
+RUN go install github.com/cweill/gotests/gotests@v1.6.0 && \
+    go install github.com/fatih/gomodifytags@v1.16.0 && \
+    go install github.com/josharian/impl@v1.1.0 && \
+    go install github.com/haya14busa/goplay/cmd/goplay@v1.0.0 && \
+    go install github.com/go-delve/delve/cmd/dlv@latest && \
+    go install honnef.co/go/tools/cmd/staticcheck@latest && \
+    go install golang.org/x/tools/gopls@latest && \
+    go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.53.3 && \
+    go install github.com/go-task/task/v3/cmd/task@latest && \
+    go install github.com/cosmtrek/air@latest
 
-COPY . .
-
-# hot reloading
-RUN go install github.com/githubnemo/CompileDaemon@latest
-
-CMD CompileDaemon -command="./myapp" -graceful-kill -build="go build -buildvcs=false"
+EXPOSE 80

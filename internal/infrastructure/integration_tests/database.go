@@ -19,7 +19,7 @@ func InitDatabase() *goqu.Database {
 
 // Reset the integration database
 func ResetDatabase() {
-	cmd := exec.Command("/usr/local/myapp/build/database/reset.sh", "integration")
+	cmd := exec.Command("/home/go-user/myapp/build/database/reset.sh", "integration")
 	if err := cmd.Run(); err != nil {
 		panic(err)
 	}

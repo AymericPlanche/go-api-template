@@ -1,0 +1,26 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/docker-existing-docker-compose
+{
+  "name": "App Skeleton",
+  "dockerComposeFile": ["../compose.yaml"],
+  "service": "go",
+  "runServices": ["go", "app"],
+  "workspaceFolder": "/home/go-user/myapp",
+  "remoteUser": "go-user",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "eamodio.gitlens",
+        "esbenp.prettier-vscode",
+        "golang.go",
+        "ms-azuretools.vscode-docker",
+        "redhat.vscode-yaml",
+        "task.vscode-task",
+        "yzhang.markdown-all-in-one"
+      ],
+      "go.lintTool": "golangci-lint",
+      "go.lintFlags": ["--fast"]
+    }
+  },
+  "postStartCommand": "task app-dev"
+}

@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"log"
+	"myapp/internal/app/response"
 	"net/http"
 	"os"
 	"os/signal"
@@ -39,6 +40,12 @@ func Handler(cfg Config, services Services) http.Handler {
 	r.Use(middleware.Timeout(30 * time.Second))
 	r.Use(middleware.Recoverer)
 	// TODO: auhtentication middleware depending on auth type
+
+	r.Route("/hello", func(r chi.Router) {
+		r.Get("/", func(w http.ResponseWriter, r *http.Request) {
+			response.Success(r.Context(), w, "Hello PxP enthousiasts !", http.StatusOK)
+		})
+	})
 
 	r.Route("/things", func(r chi.Router) {
 		h := services.APIHandlers.Things
